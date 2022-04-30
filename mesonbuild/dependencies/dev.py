@@ -299,9 +299,9 @@ class LLVMDependencyConfigTool(ConfigToolDependency):
             # If llvm is configured with LLVM_BUILD_LLVM_DYLIB but not with
             # LLVM_LINK_LLVM_DYLIB and not LLVM_BUILD_SHARED_LIBS (which
             # upstream doesn't recommend using), then llvm-config will lie to
-            # you about how to do shared-linking. It wants to link to a a bunch
+            # you about how to do shared-linking. It wants to link to a bunch
             # of individual shared libs (which don't exist because llvm wasn't
-            # built with LLVM_BUILD_SHARED_LIBS.
+            # built with LLVM_BUILD_SHARED_LIBS).
             #
             # Therefore, we'll try to get the libfiles, if the return code is 0
             # or we get an empty list, then we'll try to build a working
@@ -324,10 +324,10 @@ class LLVMDependencyConfigTool(ConfigToolDependency):
                 self.link_args.append(f'-l{libname}')
                 return
         elif self.static and mode == 'shared':
-            # If, however LLVM_BUILD_SHARED_LIBS is true # (*cough* gentoo *cough*)
+            # If, however LLVM_BUILD_SHARED_LIBS is true (*cough* gentoo *cough*)
             # then this is correct. Building with LLVM_BUILD_SHARED_LIBS has a side
             # effect, it stops the generation of static archives. Therefore we need
-            # to check for that and error out on static if this is the case
+            # to check for that and error out on static if this is the case.
             try:
                 self.__check_libfiles(False)
             except DependencyException:
@@ -346,7 +346,7 @@ class LLVMDependencyConfigTool(ConfigToolDependency):
 
         Old versions of LLVM bring an extra level of insanity with them.
         llvm-config will provide the correct arguments for static linking, but
-        not for shared-linnking, we have to figure those out ourselves, because
+        not for shared-linking, we have to figure those out ourselves, because
         of course we do.
         """
         if self.static:
